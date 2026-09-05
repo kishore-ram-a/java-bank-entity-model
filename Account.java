@@ -1,4 +1,4 @@
-public class Account {
+class Account {
     private static final double MIN_BALANCE_SAVINGS = 500.0;
     private static final double MIN_BALANCE_CURRENT = 1000.0;
     private static final int MIN_AGE = 18;
@@ -22,7 +22,14 @@ public class Account {
         if (!accountType.equalsIgnoreCase("Savings") && !accountType.equalsIgnoreCase("Current")) {
             throw new IllegalArgumentException("Invalid account type. Must be Savings or Current");
         }
-        this.accountType = accountType.equalsIgnoreCase("Savings") ? "Savings" : "Current";
+        if (!accountType.equalsIgnoreCase("SAVINGS") &&
+                !accountType.equalsIgnoreCase("CURRENT") &&
+                !accountType.equalsIgnoreCase("FIXED_DEPOSIT") &&
+                !accountType.equalsIgnoreCase("SALARY")) {
+            throw new IllegalArgumentException("Invalid account type");
+        } else {
+            this.accountType = accountType;
+        }
         if (initialBalance < getMinimumBalance()) {
             throw new IllegalArgumentException("Initial balance below minimum required");
         }
