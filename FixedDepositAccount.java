@@ -1,4 +1,4 @@
-public class FixedDepositAccount extends Account {
+public class FixedDepositAccount extends AbstractAccount {
     private int tenureMonths = 12;
     private double interestRate = 0.065;
 
@@ -18,10 +18,10 @@ public class FixedDepositAccount extends Account {
         return result;
     }
 
-    //wothdraw function
+    //debit funciton
     @Override
-    public void withdraw(double amount, int pin) throws AccountException {
-        throw new AccountException("Premature withdrawal not allowed for Fixed Deposit accounts");
+    protected void processDebit(double amount) throws AccountException{
+        throw new AccountException("Premature withdrawl is not allowed");
     }
 
     // get tenure months

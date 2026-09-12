@@ -1,4 +1,4 @@
-public class CurrentAccount extends Account {
+public class CurrentAccount extends AbstractAccount {
     private double overdraftLimit = 25000.0;
 
     public CurrentAccount(int accountNumber, String name, int age, double initialBalance, double overdraftLimit) {
@@ -6,27 +6,13 @@ public class CurrentAccount extends Account {
         this.overdraftLimit = overdraftLimit;
     }
 
-    //withdraw function
+    //debit funciton
     @Override
-    public void withdraw(double amount, int pin) throws InvalidAmountException, InsufficientBalanceException,
-            MinimumBalanceViolationException, InactiveAccountException, InvalidPinException{
-        if(!hasPin()){
-            throw new InvalidPinException("Wrong pin");
-        }
-        else if(!verifyPin(pin)){
-            throw new InvalidPinException("Invalid pin");
-        }
-        if(!(getStatus().equalsIgnoreCase("active"))){
-            throw new InactiveAccountException("Account is inactive");
-        }
-        if(!(amount > 0)){
-            throw new InvalidAmountException("Amount is invalid");
-        }if(amount > getBalance() + overdraftLimit){
+    protected void processDebit(double amount) throws InsufficientBalanceException{
+        if(amount > getBalance() + overdraftLimit){
             throw new InsufficientBalanceException("Insufficient balance");
         }
-        else{
-            setBalance(getBalance() - amount);
-        }
+        setBalance(getBalance() - amount);
     }
     // get overdraft limit
     public double getOverdraftLimit() {
@@ -35,6 +21,6 @@ public class CurrentAccount extends Account {
 
     // set overdraft limit
     public void setOverdraftLimit(double limit) {
-        this.overdraftLimit = overdraftLimit > 0 ? limit : this.overdraftLimit;
+        this.overdraftLimit = limit > 0 ? limit : this.overdraftLimit;
     }
 }

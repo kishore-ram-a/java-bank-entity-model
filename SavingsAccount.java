@@ -1,4 +1,4 @@
-public class SavingsAccount extends Account {
+public class SavingsAccount extends AbstractAccount {
     private static double minBalance = 1000.0;
     private static double interestRate = 0.04;
 
@@ -19,15 +19,13 @@ public class SavingsAccount extends Account {
         }
     }
 
-    //withdraw function
+    //debit function
     @Override
-    public void withdraw(double amount, int pin) throws AccountException, MinimumBalanceViolationException,InvalidPinException, InsufficientBalanceException, InactiveAccountException, InvalidAmountException{
-        if(this.getBalance() - amount < minBalance){
-            throw new MinimumBalanceViolationException("Minimum balance requirment not met");
+    protected void processDebit(double amount) throws MinimumBalanceViolationException{
+        if(getBalance() - amount < minBalance){
+            throw new MinimumBalanceViolationException("Minimum balance violated");
         }
-        else{
-            super.withdraw(amount, pin);
-        }
+        setBalance((getBalance() - amount));
     }
 
     // get minimum balance
