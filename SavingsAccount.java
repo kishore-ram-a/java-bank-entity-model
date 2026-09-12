@@ -2,7 +2,7 @@ public class SavingsAccount extends Account {
     private static double minBalance = 1000.0;
     private static double interestRate = 0.04;
 
-    SavingsAccount(int accountNumber, String name, int age, double initialBalance) {
+    public SavingsAccount(int accountNumber, String name, int age, double initialBalance) {
         super(accountNumber, name, age, initialBalance, "savings");
     }
 
@@ -16,6 +16,17 @@ public class SavingsAccount extends Account {
             System.out.println(e.getMessage());
         } finally {
             System.out.println("Executed successfully");
+        }
+    }
+
+    //withdraw function
+    @Override
+    public void withdraw(double amount, int pin) throws AccountException, MinimumBalanceViolationException,InvalidPinException, InsufficientBalanceException, InactiveAccountException, InvalidAmountException{
+        if(this.getBalance() - amount < minBalance){
+            throw new MinimumBalanceViolationException("Minimum balance requirment not met");
+        }
+        else{
+            super.withdraw(amount, pin);
         }
     }
 

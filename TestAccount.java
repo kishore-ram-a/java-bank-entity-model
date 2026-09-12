@@ -1,8 +1,8 @@
 public class TestAccount {
     public static void main(String[] args) {
         System.out.println("=".repeat(50));
-        System.out.println("               GLOBAL DIGITAL BANK                ");
-        System.out.println("                   ACCOUNT TEST                   ");
+        System.out.println("                GLOBAL DIGITAL BANK                 ");
+        System.out.println("                    ACCOUNT TEST                    ");
         System.out.println("=".repeat(50));
 
         // 1. Creating Account
@@ -37,8 +37,7 @@ public class TestAccount {
             acc1.withdraw(200.0, 1234);
             System.out.println("Withdrawing 200.0: SUCCESS");
             System.out.println("New balance: " + acc1.getBalance());
-        } catch (InvalidAmountException | InsufficientBalanceException | MinimumBalanceViolationException
-                | InactiveAccountException | InvalidPinException e) {
+        } catch (AccountException e) {
             System.out.println("Withdrawing 200.0: FAILED (" + e.getMessage() + ")");
         }
 
@@ -46,8 +45,7 @@ public class TestAccount {
             acc1.withdraw(2000.0, 1234);
             System.out.println("Withdrawing 2000.0: SUCCESS");
             System.out.println("New balance: " + acc1.getBalance());
-        } catch (InvalidAmountException | InsufficientBalanceException | MinimumBalanceViolationException
-                | InactiveAccountException | InvalidPinException e) {
+        } catch (AccountException e) {
             System.out.println("Withdrawing 2000.0: FAILED (" + e.getMessage() + ")");
         }
 
@@ -64,7 +62,7 @@ public class TestAccount {
         printAccountDetails(acc2);
 
         System.out.println("=".repeat(50));
-        System.out.println("                 TEST COMPLETED!                  ");
+        System.out.println("                  TEST COMPLETED!                  ");
         System.out.println("=".repeat(50));
     }
 

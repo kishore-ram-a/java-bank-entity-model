@@ -18,6 +18,12 @@ public class FixedDepositAccount extends Account {
         return result;
     }
 
+    //wothdraw function
+    @Override
+    public void withdraw(double amount, int pin) throws AccountException {
+        throw new AccountException("Premature withdrawal not allowed for Fixed Deposit accounts");
+    }
+
     // get tenure months
     public int getTenureMonths() {
         return tenureMonths;
