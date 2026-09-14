@@ -6,7 +6,7 @@ public class CurrentAccount extends AbstractAccount {
         this.overdraftLimit = overdraftLimit;
     }
 
-    //debit funciton
+    //debit function
     @Override
     protected void processDebit(double amount) throws InsufficientBalanceException{
         if(amount > getBalance() + overdraftLimit){

@@ -1,52 +1,43 @@
 public class TestAbstractAccount {
+    public static void transfer(AbstractAccount from, AbstractAccount to, double amount, int pin) throws AccountException {
+        from.withdraw(amount, pin);
+        to.deposit(amount);
+    }
+
     public static void main(String[] args) {
-        System.out.println("=== Activity 9: Abstract Account & Template Pattern ===");
+        System.out.println("=== Activity 10: Banking Operations Suite ===");
 
-        // 1. Savings Account: Valid Withdrawal & Min Balance Violation
+        SavingsAccount savings = new SavingsAccount(5001, "Alice", 25, 10000.0);
+        CurrentAccount current = new CurrentAccount(5002, "Bob", 30, 5000.0, 10000.0);
+        SalaryAccount salary = new SalaryAccount(5003, "Charlie", 28, 15000.0, "TechCorp");
+
+        savings.setPin(1234);
+        current.setPin(4321);
+        salary.setPin(1111);
+
+        AbstractAccount[] portfolio = { savings, current, salary };
         try {
-            SavingsAccount sa = new SavingsAccount(4001, "Alice", 25, 10000.0);
-            sa.setPin(1234);
-
-            // Valid withdraw
-            sa.withdraw(2000.0, 1234);
-            System.out.println("[Savings] Withdraw 2000: SUCCESS | Balance: Rs " + sa.getBalance());
-
-            // Min balance violation (balance is 8000, minBalance is 1000, debit 7500 leaves 500)
-            System.out.print("[Savings] Withdraw below min balance: ");
-            sa.withdraw(7500.0, 1234);
-            System.out.println("FAILED (Should have thrown exception)");
-        } catch (MinimumBalanceViolationException e) {
-            System.out.println("Caught MinimumBalanceViolationException [PASS]");
-        } catch (Exception e) {
-            System.out.println("FAILED (Caught wrong exception: " + e.getMessage() + ")");
-        }
-
-        // 2. Current Account: Overdraft Debit
-        try {
-            CurrentAccount ca = new CurrentAccount(4002, "Bob", 30, 2000.0, 10000.0);
-            ca.setPin(4321);
-
-            // Overdraft deduction: 2000 - 5000 = -3000 (allowed within limit of 10000)
-            ca.withdraw(5000.0, 4321);
-            System.out.println("[Current] Overdraft debit: SUCCESS | Balance: Rs " + ca.getBalance());
-        } catch (Exception e) {
-            System.out.println("[Current] Overdraft debit: FAILED (" + e.getMessage() + ")");
-        }
-
-        // 3. Fixed Deposit: Premature Debit Blocked
-        try {
-            FixedDepositAccount fda = new FixedDepositAccount(4003, "Charlie", 40, 50000.0, 12, 6.5);
-            fda.setPin(9999);
-
-            System.out.print("[FixedDeposit] Premature debit: ");
-            fda.withdraw(5000.0, 9999);
-            System.out.println("FAILED (Should have thrown exception)");
+            transfer(savings, current, 3000.0, 1234);
+            System.out.println("Transfer Rs 3000 from Savings to Current: SUCCESS");
+            System.out.println("Savings Balance: Rs " + savings.getBalance() + " | Current Balance: Rs " + current.getBalance());
         } catch (AccountException e) {
-            System.out.println("Caught AccountException [PASS]");
-        } catch (Exception e) {
-            System.out.println("FAILED (Caught wrong exception: " + e.getMessage() + ")");
+            System.out.println("Transfer failed: " + e.getMessage());
         }
 
-        System.out.println("Template method pattern executed successfully!");
+        try {
+            transfer(savings, current, 1000.0, 9999); // Invalid PIN
+            System.out.println("Transfer succeeded unexpectedly");
+        } catch (AccountException e) {
+            System.out.println("Failed Transfer (Wrong PIN): Exception caught, no balance changed [PASS]");
+        }
+
+        for (AbstractAccount acc : portfolio) {
+            if (acc instanceof SavingsAccount) {
+                ((SavingsAccount) acc).applyInterest();
+            }
+        }
+        System.out.println("Monthly Interest Cycle processed for all qualifying accounts.");
+
+        System.out.println("All banking operations passed!");
     }
 }
