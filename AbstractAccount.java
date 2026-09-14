@@ -1,4 +1,4 @@
-public abstract class AbstractAccount {
+public abstract class AbstractAccount implements IAccount {
     private static final int MIN_AGE = 18;
     private static final int MIN_PIN = 1000;
     private static final int MAX_PIN = 9999;
